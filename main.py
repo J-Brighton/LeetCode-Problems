@@ -2,15 +2,153 @@ from typing import List
 
 class Solution:
 
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        """
+        Q: 1. Two Sum
+
+        Given an array of integers nums and an integer target, return indices of the two numbers
+        such that they add up to target.
+
+        You may assume that each input would have exactly one solution, and you may not use the same
+        element twice.
+
+        You can return the answer in any order.
+        """
+
+        for i in range(len(nums)):                          # look through the array
+            test_num = nums[i]                              # grab a test number
+
+            complement = target - test_num
+            if complement in nums[i+1:]:
+                return [i, nums.index(complement, i+1)]   # return our pair
+
+        return []
+
+    def maxNumberofBalloons(self, text: str) -> int:
+        """
+        Q: 1189. Maximum number of balloons
+
+        Given a string Text, you want to use the characters of Text to form as many instances of the word
+        "balloon" as possible.
+
+        You can use each character in Text at most once. Return the maximum number of instances.
+        """
+        bank = {}
+        balloons = 0
+
+        # if we can't have one balloon why bother partying
+        if len(text) < 7:
+            return 0
+
+        # populate bank
+        for char in text:
+            if char in bank:
+                bank[char] += 1
+            else:
+                bank[char] = 1
+
+        # b a l l o o n
+        while True:
+            for char in "balloon":
+                if char in bank and bank[char] > 0:
+                    bank[char] -= 1
+                else:
+                    return balloons
+            balloons += 1
+
+    def isAnagram(self, s: str, t: str) -> bool:
+        '''
+        Q: 242. Valid Anagram
+
+        Given two strings s and t, return True if t is an anagram of s, and false otherwise.
+        '''
+
+        count_s = {}
+        count_t = {}
+
+        for char in s:
+            if char in count_s:
+                count_s[char] += 1
+            else:
+                count_s[char] = 1
+
+        for char in t:
+            if char in count_t:
+                count_t[char] += 1
+            else:
+                count_t[char] = 1
+
+        return count_s == count_t
+
+    def canConstruct(self, ransomNote: str, magazine: str) -> bool:
+        '''
+        Q: 383. Ransom Note
+        Given two strings ransomNote and magazine, return True if ransomNote can be constructed by using
+        the letters from magazine, else return False.
+
+        Each letter in magazine can only be used once in ransomNote.
+        '''
+
+        '''
+        improved answer:
+        for letter in set(ransomNote):
+            if ransomNote.count(letter) > magazine.count(letter):
+                return False
+        return True
+        '''
+        bank = {}
+
+        # go through the magazine and find out how many letters we have to play with
+        for letter in magazine:
+            if letter not in bank:
+                bank[letter] = 1
+            elif letter in bank:
+                bank[letter] += 1
+
+        # use the bank of letters to construct the note
+        for letter in ransomNote:
+            if letter in bank and bank[letter] > 0:
+                bank[letter] -= 1
+            else:
+                return False
+
+        return True
+
+    def containsDuplicate(self, nums: List[int]) -> bool:
+        '''
+        Q: 217. Contains Duplicate
+
+        Given an integer array nums, return true if any value appears at least twice in the array.
+        Return false if every element in the array is distinct
+        '''
+
+        seen_numbers = set()
+
+        for num in nums:
+            if num in seen_numbers:
+                return True
+            else:
+                seen_numbers.add(num)
+
+        return False
+
     def numJewelsInStones(self, jewels: str, stones: str) -> int:
         '''
+        Q: 771. Jewels and Stones
+        You're given strings Jewels representing the types of stones that are jewels
+        and Stones representing the stones you have. Each character in stones is a type of stone
+        you have. You want to know how many of the stones you have are also jewels.
 
-        :param jewels:
-        :param stones:
-        :return:
+        Letters are case-sensitive, so "a" is different from "A"
         '''
 
-
+        hoard = 0
+        for item in stones:
+            if item in jewels:
+                hoard += 1
+            else:
+                continue
+        return hoard
 
     def rotate(self, matrix: List[List[int]]) -> None:
         """
@@ -240,16 +378,58 @@ if __name__ == '__main__':
     matrix3 = [[5,1,9,11], [2,4,8,10], [13,3,6,7], [15,14,12,16]]
     nums = [1,2,3,4]
     nums2 = [-1,1,0,-3,3]
+    nums3 = [1,2,3,1]
+    nums4 = [1,1,1,3,3,4,3,2,4,2]
     matrix4 = [[-1,2,-3,4]]
     #strs = ["flower","flow","flight"]
     #nums = [0,1,2,4,5,7]
     #nums2 = [0,2,3,4,6,8,9]
+
+    jewels = "aA"
+    stones = "aAAbbbb"
+
+    jewels2 = "z"
+    stones2 = "ZZ"
+
+    ransomNote = "a"
+    magazine = "b"
+    ransomNote2 = "aa"
+    magazine2 = "ab"
+    ransomNote3 = "aa"
+    magazine3 = "aab"
+
+    s = "anagram"
+    t = "nagaram"
+
+    s2 = "rat"
+    t2 = "car"
+
     intervals1 = [[1,3], [2,6], [8,10], [15,18]]
     intervals2 = [[1,4], [4,5]]
     intervals3 = [[1,4], [0,4]]
     intervals4 = [[1,3]]
 
-    print(Solution().rotate(matrix4))
+    text = "nlaebolko"
+    text2 = "loonbalxballpoon"
+    text3 = "leetcode"
+    text4 = "1"
+
+    tsnums = [2,7,11,15]
+    target = 9
+
+    print(Solution().twoSum(tsnums, target))
+
+    #print(Solution().maxNumberofBalloons(text4))
+
+    #print(Solution.isAnagram(s))
+
+    #print(Solution().canConstruct(ransomNote3, magazine3))
+
+    #print(Solution().containsDuplicate(nums3))
+
+    #print(Solution().numJewelsInStones(jewels, stones))
+
+    #print(Solution().rotate(matrix4))
 
     #print(Solution().spiralOrder(matrix2))
 
