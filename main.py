@@ -2,6 +2,86 @@ from typing import List
 
 class Solution:
 
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        """
+        Q: 36. Valid Sudoku
+
+        Determine if a 9x9 sudoku board is valid. Only the filled cells need to be validated according to;
+        1. each row must contain digits 1-9 without repetition
+        2. each column likewise
+        3. each of the nine 3x3 sub-boxes of the grid must contain digits 1-9 without repetition.
+        """
+
+            """
+            a much nicer solution that doesnt have unnecessary repetition:
+            the key here is finding a way to number the boxes and properly checking numbers across rows / columns
+            
+            rows = [set() for _ in range(9)]
+            cols = [set() for _ in range(9)]
+            box = [set() for _ in range(9)]
+            
+            for i in range(9)
+                for j in range(9)
+                num = board[i][j]
+                
+                if num == '.':
+                    continue
+                    
+                box_index = (i // 3) * 3 + (j // 3)
+                
+                if num in rows[i] or num in cols[j] or num in box[box_index]:
+                    return False
+                
+                rows[i].add(num)
+                cols[j].add(num)
+                box[box_index].add(num)
+                
+            return True
+            """
+        # determine if across is valid
+        # determine if up-down is valid
+
+        # check sudoku
+        for i in range(len(board)):
+
+            # reset both sets once we've iterated over a line
+            h_line = set()
+            v_line = set()
+
+            for j in range(len(board[0])):
+
+                # if board has a number on this line
+                if board[i][j] != '.':
+
+                    # check horizontal line
+                    if board[i][j] in h_line:
+                        return False
+                    else:
+                        h_line.add(board[i][j])
+
+                # if board has number on this line
+                if board[j][i] != '.':
+
+                    # check vertical line
+                    if board[j][i] in v_line:
+                        return False
+                    else:
+                        v_line.add(board[j][i])
+
+        for row in range(0, 9, 3):
+            for col in range(0, 9, 3):
+                sub_box = set()
+
+                for i in range(row, row+3):
+                    for j in range(col, col+3):
+                        if board[i][j] != ".":
+                            if board[i][j] in sub_box:
+                                return False
+                            else:
+                                sub_box.add(board[i][j])
+
+        return True
+
     def twoSum(self, nums: List[int], target: int) -> List[int]:
         """
         Q: 1. Two Sum
@@ -417,7 +497,19 @@ if __name__ == '__main__':
     tsnums = [2,7,11,15]
     target = 9
 
-    print(Solution().twoSum(tsnums, target))
+    board =[["5", "3", ".", ".", "7", ".", ".", ".", "."]
+        , ["6", ".", ".", "1", "9", "5", ".", ".", "."]
+        , [".", "9", "8", ".", ".", ".", ".", "6", "."]
+        , ["8", ".", ".", ".", "6", ".", ".", ".", "3"]
+        , ["4", ".", ".", "8", ".", "3", ".", ".", "1"]
+        , ["7", ".", ".", ".", "2", ".", ".", ".", "6"]
+        , [".", "6", ".", ".", ".", ".", "2", "8", "."]
+        , [".", ".", ".", "4", "1", "9", ".", ".", "5"]
+        , [".", ".", ".", ".", "8", ".", ".", "7", "9"]]
+
+    print(Solution().isValidSudoku(board))
+
+    #print(Solution().twoSum(tsnums, target))
 
     #print(Solution().maxNumberofBalloons(text4))
 
