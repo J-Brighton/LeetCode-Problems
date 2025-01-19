@@ -1,6 +1,125 @@
+from collections import Counter
 from typing import List
 
 class Solution:
+
+
+
+    def longestConsecutive(self, nums: List[int]) -> int:
+        """
+        Q.128 Longest Consecutive Sequence
+
+        Given an unsorted array of integers, return the length of the longest consecutive elements sequence.
+
+        You must write an algorithm with O(n) runtime complexity.
+
+        nums = [100, 4, 200, 1, 3, 2]
+        output: 4
+
+
+        """
+
+        # we have a running update of what is in sequence and how long it is
+        # if our current number + or - 1 is in the number set, then it's in the sequence.
+        # if we have no sequence at the end, the number is 1 unless nums is empty
+        # nums = [9,1,4,7,3,-1,0,5,8,-1,6]
+        # for above nums, -1 0 1 are in sequence but are broken by a missing 2 - still considered by the code to be in sequence
+
+        '''
+            nums_set = set(nums)
+            seen_nums = set()
+            s_count = 0
+    
+            if not nums_set:
+                return s_count
+    
+            for i in range(len(nums)):
+                num = nums[i]
+                np1 = nums[i] + 1
+                nm1 = nums[i] - 1
+    
+                print(f'Test {i}: checking index {i}, num {nums[i]} \n')
+    
+                if (np1 in nums_set or nm1 in nums_set) and num not in seen_nums:
+                    s_count += 1
+                    seen_nums.add(num)
+                    print(f'Test {i}: {np1} or {nm1} found in {nums_set}. s_count now {s_count} \n')
+                else:
+                    print(f'Test {i}: {np1} or {nm1} not found in {nums_set}. \n')
+    
+            # if we've seen all numbers and still have no sequence, it is its own sequence
+            if s_count < 1:
+                s_count += 1
+    
+            return s_count
+        '''
+
+        if not nums:
+            return 0
+
+        nums_set = set(nums)
+        lstreak = 0
+
+        for num in nums_set:
+
+            if num - 1 not in nums_set:
+                cnum = num
+                cstreak = 1
+
+                while cnum + 1 in nums_set:
+                    cnum += 1
+                    cstreak += 1
+
+                lstreak = max(lstreak, cstreak)
+
+        return lstreak
+
+    def majorityElement(self, nums: List[int]) -> int:
+        """
+        Q. 169 Majority Element
+        Given an array nums of size n, return the majority element.
+
+        The majority element is the element that appears more than n/2 times.
+        You may assume that the majority element always exists in the array.
+        """
+
+        majority = Counter(nums)
+
+        print(majority)
+
+        return max(majority.keys(), key=majority.get)
+
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        """
+        Q: 49. Group Anagrams
+
+        Given an array of strings strs, group the anagrams together.
+        You can return the answer in any order.
+
+        Input: strs = ["eat","tea","tan","ate","nat","bat"]
+        Output: [["bat"],["nat","tan"],["ate","eat","tea"]]
+
+        Explanation:
+        There is no string in strs that can be rearranged to form "bat".
+        The strings "nat" and "tan" are anagrams as they can be rearranged to form each other.
+        The strings "ate", "eat", and "tea" are anagrams as they can be rearranged to form each other.
+        """
+
+        # we count the letters that are in each word
+        # check if the next word has the same amount
+        # if they do they are an anagram
+
+        anagrams = {}
+
+        for word in strs:
+
+            sorted_word = "".join(sorted(word))
+
+            if sorted_word not in anagrams:
+                anagrams[sorted_word] = []
+            anagrams[sorted_word].append(word)
+
+        return list(anagrams.values())
 
     def isValidSudoku(self, board: List[List[str]]) -> bool:
         """
@@ -12,16 +131,16 @@ class Solution:
         3. each of the nine 3x3 sub-boxes of the grid must contain digits 1-9 without repetition.
         """
 
-            """
-            a much nicer solution that doesnt have unnecessary repetition:
-            the key here is finding a way to number the boxes and properly checking numbers across rows / columns
-            
-            rows = [set() for _ in range(9)]
-            cols = [set() for _ in range(9)]
-            box = [set() for _ in range(9)]
-            
-            for i in range(9)
-                for j in range(9)
+        """
+        a much nicer solution that doesnt have unnecessary repetition:
+        the key here is finding a way to number the boxes and properly checking numbers across rows / columns
+        
+        rows = [set() for _ in range(9)]
+        cols = [set() for _ in range(9)]
+        box = [set() for _ in range(9)]
+        
+        for i in range(9)
+            for j in range(9)
                 num = board[i][j]
                 
                 if num == '.':
@@ -35,9 +154,9 @@ class Solution:
                 rows[i].add(num)
                 cols[j].add(num)
                 box[box_index].add(num)
-                
-            return True
-            """
+            
+        return True
+        """
         # determine if across is valid
         # determine if up-down is valid
 
@@ -507,7 +626,25 @@ if __name__ == '__main__':
         , [".", ".", ".", "4", "1", "9", ".", ".", "5"]
         , [".", ".", ".", ".", "8", ".", ".", "7", "9"]]
 
-    print(Solution().isValidSudoku(board))
+    strs = ["eat","tea","tan","ate","nat","bat"]
+    strs2 = ["a"]
+
+    majelement = [3,2,3]
+    majelement2 = [2,2,1,1,1,2,2]
+    majelement3 = [1,1,1,1,1,2]
+
+    numbers = [100,4,200,1,3,2]
+    numbers2 = [0,3,7,2,5,8,4,6,0,1]
+    numbers3 = [0,0]
+    numbers4 = [9, 1, 4, 7, 3, -1, 0, 5, 8, -1, 6]
+
+    print(Solution().longestConsecutive(numbers4))
+
+    #print(Solution().majorityElement(majelement3))
+
+    #print(Solution().groupAnagrams(strs2))
+
+    #print(Solution().isValidSudoku(board))
 
     #print(Solution().twoSum(tsnums, target))
 
