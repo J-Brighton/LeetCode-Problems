@@ -3,7 +3,118 @@ from typing import List
 
 class Solution:
 
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        """
+        Q: 15. 3Sum
+        Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that
+        i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
 
+        Notice that the solution set must not contain duplicate triplets.
+
+        Input: nums = [-1, 0, 1, 2, -1, -4]
+        Output = [[-1, -1, 2], [-1, 0, 1]]
+        Explanation: nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0.
+                    nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0.
+                    nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0.
+
+        The distinct triplets are [-1,0,1] and [-1,-1,2].
+        Notice that the order of the output and the order of the triplets does not matter.
+        """
+
+
+    def isPalindrome(self, s: str) -> bool:
+        """
+        Q: 125. Valid Palindrome
+        A phrase is a palindrome if it reads the same forwards and backwards.
+        We're lowercasing all chars, removing all non characters.
+
+        Given string s, return true if its a palindrome, false otherwise.
+
+        Input: s = "A man, a plan, a canal: Panama"
+        Output: true
+        Explanation: "amanaplanacanalpanama" is a palindrome
+        """
+
+        left, right = 0, len(s)-1
+
+        while left < right:
+            while left < right and not s[left].isalnum():
+                left += 1
+            while left < right and not s[right].isalnum():
+                right -= 1
+
+            if s[left].lower() != s[right].lower():
+                return False
+
+            left += 1
+            right -= 1
+
+        return True
+
+    def twoSum2(self, numbers: List[int], target: int) -> List[int]:
+        """
+        Q: 167. Two Sum II - Input Array Is Sorted
+        Given a 1-indexed array of integers numbers that is already sorted in non-decreasing order, find two numbers
+        such that they add up to a specific target number.
+
+        Let these two numbers be numbers[index1] and numbers[index2] where 1 <= index1 < index2 <= numbers.length
+
+        Return the indices of the two numbers, index1 and index2, added by one as an integers array [index1, index2]
+        of length 2.
+
+        The tests are generated such that there is exactly one solution. You may not use the same element twice.
+
+        Your solution must use only constant extra space.
+
+        Input: numbers = [2, 7, 11, 15], target = 9
+        Output: [1, 2]
+        Explanation: The sum of 2 and 7 is 9. therefore, index1 = 1, index2 = 2. return [1, 2]
+        """
+        seen = {}
+
+        for i in range(len(numbers)):
+            test_num = numbers[i]
+            complement = target - test_num
+
+            if complement in seen:
+                return [seen[complement] + 1, i + 1]
+            seen[test_num] = i
+
+        return []
+
+    def reverseString(self, s: List[str]) -> None:
+        """
+        Q: 344. Reverse String
+        Write a function that reverses a string. The input string is given as na array of characters .
+
+        You must do this by modifying the input array in place with O(1) extra memory.
+
+        Input: s = ["h","e","l","l","o"]
+        Output: ["o","l","l","e","h"]
+        """
+
+        print(s)
+
+        for i in range(len(s)//2):
+            s[i], s[len(s)-i-1] = s[len(s)-i-1], s[i]
+
+        print(s)
+
+    def sortedSquares(self, nums: List[int]) -> List[int]:
+        """
+        Q: 977. Squares of a Sorted Array
+        Given an integer array nums sorted in non-decreasing order, return an array of the
+        squares of each number sorted in non-decreasing order.
+
+        Input: nums = [-4, -1, 0, 3, 10]
+        Output = [0, 1, 9, 16, 100]
+        """
+        output = []
+
+        for num in nums:
+            output.append(num ** 2)
+
+        return sorted(output)
 
     def longestConsecutive(self, nums: List[int]) -> int:
         """
@@ -638,7 +749,36 @@ if __name__ == '__main__':
     numbers3 = [0,0]
     numbers4 = [9, 1, 4, 7, 3, -1, 0, 5, 8, -1, 6]
 
-    print(Solution().longestConsecutive(numbers4))
+    ssnum = [-4, -1, 0, 3, 10]
+    string = ["h", "e", "l", "l", "o"]
+    string2 = ["h", "e", "l", "l"]
+    string3 = ["h"]
+
+    print("\nTest Case 1")
+    print(Solution().isPalindrome(s = "A man, a plan, a canal: Panama"))
+
+    print("\nTest Case 2")
+    print(Solution().isPalindrome(s = "race a car"))
+
+    print("\nTest Case 2")
+    print(Solution().isPalindrome(s = " "))
+
+
+    """
+    print("Test Case 1\n")
+    print(Solution().twoSum2(numbers = [2, 7, 11, 15], target = 9))
+
+    print("Test Case 2\n")
+    print(Solution().twoSum2(numbers = [2, 3, 4], target = 6))
+
+    print("Test Case 3\n")
+    print(Solution().twoSum2(numbers = [-1, 0], target = -1))
+    """
+    #print(Solution().reverseString(string3))
+
+    #print(Solution().sortedSquares(ssnum))
+
+    #print(Solution().longestConsecutive(numbers4))
 
     #print(Solution().majorityElement(majelement3))
 
