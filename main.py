@@ -12,6 +12,38 @@ class Solution:
         Output: 6
         """
 
+        left, right = 0, len(height) - 1
+        max_l, max_r = height[left], height[right]
+        area = 0
+
+        while left < right:
+            if max_l <= max_r:
+                # always increment left and update max_l
+                left += 1
+
+                if height[left] < max_l:
+                    # water is trapped here
+                    area += max_l - height[left]
+                else:
+                    # update max_l if current height is greater
+                    max_l = height[left]
+
+            else:
+                # always decrement right and update max_r
+                right -= 1
+
+                if height[right] < max_r:
+                    # water is trapped here
+                    area += max_r - height[right]
+                else:
+                    # update max_r if current height is greater
+                    max_r = height[right]
+
+            # debug print
+            print(f"left={left}, right={right}, max_l={max_l}, max_r={max_r}, area={area}")
+
+        return area
+
     def maxArea(self, height: List[int]) -> int:
         """
         Q. 11: Container with Most Water.
@@ -826,15 +858,27 @@ if __name__ == '__main__':
     string2 = ["h", "e", "l", "l"]
     string3 = ["h"]
 
-
     print("\nTest Case 1")
+    print(Solution().trap(height = [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]))
+
+    print("\nTest Case 2")
+    print(Solution().trap(height = [4, 2, 0, 3, 2, 5]))
+
+    print("\nTest Case 3")
+    print(Solution().trap(height = [0, 0, 0, 0]))
+
+    print("\nTest Case 4")
+    print(Solution().trap(height = [1]))
+
+
+    """    print("\nTest Case 1")
     print(Solution().maxArea(height = [1, 8, 6, 2, 5, 4, 8, 3, 7]))
 
     print("\nTest Case 2")
     print(Solution().maxArea(height = [1, 1]))
 
     print("\nTest Case 3")
-    print(Solution().maxArea(height = [10, 8, 6, 2, 5, 4, 8, 3, 0]))
+    print(Solution().maxArea(height = [10, 8, 6, 2, 5, 4, 8, 3, 0]))"""
 
     """    print("\nTest Case 1")
     print(Solution().threeSum(nums = [-1, 0, 1, 2, -1, -4]))
