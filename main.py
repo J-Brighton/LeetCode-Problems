@@ -3,6 +3,50 @@ from typing import List
 
 class Solution:
 
+    def trap(self, height: List[int]) -> int:
+        """
+        Given n non-negative integers representing an elevation map where the width of each bar is 1
+        compute how much water it can trap after raining.
+
+        Input: height = [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]
+        Output: 6
+        """
+
+    def maxArea(self, height: List[int]) -> int:
+        """
+        Q. 11: Container with Most Water.
+        You are given an integer array height of length n.
+        There are n vertical lines drawn such that the two endpoints of the i-th line are (i,0) and (i, height[i])
+
+        Find the two lines that together with the x-axis form a container, such that the continer contains
+        the most water.
+
+        Return the maximum amount of water a container can store.
+
+        Notice that you may not slant the container.
+
+        Input: height = [1, 8, 6, 2, 5, 4, 8, 3, 7]
+        Output = 49
+        """
+
+        n = len(height)
+        area = 0        # determined by max right that is <= max left * index + 1
+        left, right = 0, n - 1
+        max_l, max_r = height[left], height[right]
+
+        while left < right:
+
+            area = max(area, min(max_l, max_r) * (right - left))
+
+            if max_l < max_r:
+                left += 1
+                max_l = max(max_l, height[left])
+            else:
+                right -= 1
+                max_r = max(max_r, height[right])
+
+        return area
+
     def threeSum(self, nums: List[int]) -> List[List[int]]:
         """
         Q: 15. 3Sum
@@ -20,7 +64,35 @@ class Solution:
         The distinct triplets are [-1,0,1] and [-1,-1,2].
         Notice that the order of the output and the order of the triplets does not matter.
         """
+        nums.sort()
+        output = []
 
+        for fixed_num in range(len(nums) - 2):
+            if fixed_num > 0 and nums[fixed_num] == nums[fixed_num - 1]:
+                continue
+
+            left, right = fixed_num + 1, len(nums) - 1
+
+            while left < right:
+                three_sum = nums[fixed_num] + nums[left] + nums[right]
+
+                if three_sum == 0:
+                    output.append([nums[fixed_num], nums[left], nums[right]])
+
+                    left += 1
+                    right -= 1
+
+                    while left < right and nums[left] == nums[left - 1]:
+                        left += 1
+                    while left < right and nums[right] == nums[right + 1]:
+                        right -= 1
+
+                elif three_sum < 0:
+                    left += 1
+                else:
+                    right -= 1
+
+        return output
 
     def isPalindrome(self, s: str) -> bool:
         """
@@ -754,14 +826,36 @@ if __name__ == '__main__':
     string2 = ["h", "e", "l", "l"]
     string3 = ["h"]
 
+
     print("\nTest Case 1")
+    print(Solution().maxArea(height = [1, 8, 6, 2, 5, 4, 8, 3, 7]))
+
+    print("\nTest Case 2")
+    print(Solution().maxArea(height = [1, 1]))
+
+    print("\nTest Case 3")
+    print(Solution().maxArea(height = [10, 8, 6, 2, 5, 4, 8, 3, 0]))
+
+    """    print("\nTest Case 1")
+    print(Solution().threeSum(nums = [-1, 0, 1, 2, -1, -4]))
+
+    print("\nTest Case 2")
+    print(Solution().threeSum(nums = [0, 1, 1]))
+
+    print("\nTest Case 3")
+    print(Solution().threeSum(nums = [0, 0, 0]))
+
+    print("\nTest Case 4")
+    print(Solution().threeSum(nums = [1, -1, 0, 1]))"""
+
+    """    print("\nTest Case 1")
     print(Solution().isPalindrome(s = "A man, a plan, a canal: Panama"))
 
     print("\nTest Case 2")
     print(Solution().isPalindrome(s = "race a car"))
 
     print("\nTest Case 2")
-    print(Solution().isPalindrome(s = " "))
+    print(Solution().isPalindrome(s = " "))"""
 
 
     """
