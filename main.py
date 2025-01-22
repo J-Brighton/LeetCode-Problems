@@ -1,7 +1,70 @@
-from collections import Counter
+from collections import Counter, deque
 from typing import List
 
 class Solution:
+
+    def isValidParentheses(self, s: str) -> bool:
+        """
+        Given a string s containing just the character '(', ')', '{', '}', '[' and ']',
+        determine if the input string is valid.
+
+        an input string is valid if:
+        1. open brackets must be closed by the same type of brackets.
+        2. open brackets must be closed in the correct order.
+        3. every close bracket has a corresponding open bracket of the same type.
+
+        Input: s = "()"
+        Output: True
+
+        Input: s = "(]"
+        Output: False
+        """
+
+
+
+    def calPoints(self, operations: List[str]) -> int:
+        """
+        You are keeping the scores for a baseball game with strange rules.
+        At the beginning of the game, you start with an empty record. You are given a list of strings operations,
+        where operations[i] is the i-th operation you must apply to the record and is one of the following:
+
+        integer x: record a new score of x
+        '+': record a new score that is the sum of the previous two scores
+        'D': record a new score that is the double of the previous score
+        'C': invalidate the previous score, removing it from the record
+
+        return the sum of all the scores on the record after applying all the operations.
+
+        the test cases are generated such that the answer and all intermediate calc fit in a 32-bit integer.
+        all operations are valid.
+
+        Input: ops = ["5", "2", "C", "D", "+"]
+        Output: 30
+        """
+        record = [0] * len(operations)
+        ops = deque(operations)
+
+        print(ops)
+        while ops:
+            op = ops.popleft()
+
+            if op == "C":
+                print("Remove last operation: \n", record)
+                record.pop()
+
+            elif op == "+":
+                print(f"Sum {record[-2]} and {record[-1]}\n", record)
+                record.append(int(record[-2]) + int(record[-1]))
+
+            elif op == "D":
+                print(f"Double {record[-1]}\n", record)
+                record.append(int(record[-1]) * 2)
+
+            else:
+                print(f"Add {op}\n", record)
+                record.append(int(op))
+
+        return sum(record)
 
     def trap(self, height: List[int]) -> int:
         """
@@ -787,78 +850,16 @@ class Solution:
 
 if __name__ == '__main__':
 
-    matrix = [[1,2,3,4], [5,6,7,8], [9,10,11,12]]
-    matrix2 = [[1,2,3], [4,5,6], [7,8,9]]
-    matrix3 = [[5,1,9,11], [2,4,8,10], [13,3,6,7], [15,14,12,16]]
-    nums = [1,2,3,4]
-    nums2 = [-1,1,0,-3,3]
-    nums3 = [1,2,3,1]
-    nums4 = [1,1,1,3,3,4,3,2,4,2]
-    matrix4 = [[-1,2,-3,4]]
-    #strs = ["flower","flow","flight"]
-    #nums = [0,1,2,4,5,7]
-    #nums2 = [0,2,3,4,6,8,9]
+    print("\nTest 1:")
+    print(Solution().calPoints(["5","2","C","D","+"]))
 
-    jewels = "aA"
-    stones = "aAAbbbb"
+    print("\nTest 2:")
+    print(Solution().calPoints(["5","-2","4","C","D","9","+","+"]))
 
-    jewels2 = "z"
-    stones2 = "ZZ"
+    print("\nTest 3:")
+    print(Solution().calPoints(["1","C"]))
 
-    ransomNote = "a"
-    magazine = "b"
-    ransomNote2 = "aa"
-    magazine2 = "ab"
-    ransomNote3 = "aa"
-    magazine3 = "aab"
-
-    s = "anagram"
-    t = "nagaram"
-
-    s2 = "rat"
-    t2 = "car"
-
-    intervals1 = [[1,3], [2,6], [8,10], [15,18]]
-    intervals2 = [[1,4], [4,5]]
-    intervals3 = [[1,4], [0,4]]
-    intervals4 = [[1,3]]
-
-    text = "nlaebolko"
-    text2 = "loonbalxballpoon"
-    text3 = "leetcode"
-    text4 = "1"
-
-    tsnums = [2,7,11,15]
-    target = 9
-
-    board =[["5", "3", ".", ".", "7", ".", ".", ".", "."]
-        , ["6", ".", ".", "1", "9", "5", ".", ".", "."]
-        , [".", "9", "8", ".", ".", ".", ".", "6", "."]
-        , ["8", ".", ".", ".", "6", ".", ".", ".", "3"]
-        , ["4", ".", ".", "8", ".", "3", ".", ".", "1"]
-        , ["7", ".", ".", ".", "2", ".", ".", ".", "6"]
-        , [".", "6", ".", ".", ".", ".", "2", "8", "."]
-        , [".", ".", ".", "4", "1", "9", ".", ".", "5"]
-        , [".", ".", ".", ".", "8", ".", ".", "7", "9"]]
-
-    strs = ["eat","tea","tan","ate","nat","bat"]
-    strs2 = ["a"]
-
-    majelement = [3,2,3]
-    majelement2 = [2,2,1,1,1,2,2]
-    majelement3 = [1,1,1,1,1,2]
-
-    numbers = [100,4,200,1,3,2]
-    numbers2 = [0,3,7,2,5,8,4,6,0,1]
-    numbers3 = [0,0]
-    numbers4 = [9, 1, 4, 7, 3, -1, 0, 5, 8, -1, 6]
-
-    ssnum = [-4, -1, 0, 3, 10]
-    string = ["h", "e", "l", "l", "o"]
-    string2 = ["h", "e", "l", "l"]
-    string3 = ["h"]
-
-    print("\nTest Case 1")
+    """    print("\nTest Case 1")
     print(Solution().trap(height = [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]))
 
     print("\nTest Case 2")
@@ -868,8 +869,7 @@ if __name__ == '__main__':
     print(Solution().trap(height = [0, 0, 0, 0]))
 
     print("\nTest Case 4")
-    print(Solution().trap(height = [1]))
-
+    print(Solution().trap(height = [1]))"""
 
     """    print("\nTest Case 1")
     print(Solution().maxArea(height = [1, 8, 6, 2, 5, 4, 8, 3, 7]))
@@ -901,7 +901,6 @@ if __name__ == '__main__':
     print("\nTest Case 2")
     print(Solution().isPalindrome(s = " "))"""
 
-
     """
     print("Test Case 1\n")
     print(Solution().twoSum2(numbers = [2, 7, 11, 15], target = 9))
@@ -912,6 +911,7 @@ if __name__ == '__main__':
     print("Test Case 3\n")
     print(Solution().twoSum2(numbers = [-1, 0], target = -1))
     """
+
     #print(Solution().reverseString(string3))
 
     #print(Solution().sortedSquares(ssnum))
