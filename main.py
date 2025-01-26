@@ -20,7 +20,31 @@ class Solution:
         Output: False
         """
 
+        if not s:
+            return False
 
+        if len(s) % 2 != 0:
+            return False
+
+        stack = []
+        bracket_pairs = {
+            ')': '(',
+            '}': '{',
+            ']': '['
+        }
+
+        for char in s:
+            if char in bracket_pairs.values():  # If it's an opening bracket
+                stack.append(char)
+            elif char in bracket_pairs.keys():  # If it's a closing bracket
+                if not stack or stack.pop() != bracket_pairs[char]:
+                    return False
+            else:
+                # If the character is not a valid bracket
+                return False
+
+        # If the stack is empty, the brackets were matched correctly
+        return not stack
 
     def calPoints(self, operations: List[str]) -> int:
         """
@@ -851,13 +875,31 @@ class Solution:
 if __name__ == '__main__':
 
     print("\nTest 1:")
+    print(Solution().isValidParentheses(s = "()"))
+
+    print("\nTest 2:")
+    print(Solution().isValidParentheses(s = "()[]{}"))
+
+    print("\nTest 3:")
+    print(Solution().isValidParentheses(s = "(]"))
+
+    print("\nTest 4:")
+    print(Solution().isValidParentheses(s = "([])"))
+
+    print("\nTest 5: Unmatched Opening / Closing")
+    print(Solution().isValidParentheses(s = "[(])"))
+
+    print("\nTest 5: Unmatched Opening / Closing")
+    print(Solution().isValidParentheses(s="([{}]]])"))
+
+    """    print("\nTest 1:")
     print(Solution().calPoints(["5","2","C","D","+"]))
 
     print("\nTest 2:")
     print(Solution().calPoints(["5","-2","4","C","D","9","+","+"]))
 
     print("\nTest 3:")
-    print(Solution().calPoints(["1","C"]))
+    print(Solution().calPoints(["1","C"]))"""
 
     """    print("\nTest Case 1")
     print(Solution().trap(height = [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]))
